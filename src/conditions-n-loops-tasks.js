@@ -456,8 +456,52 @@ function rotateMatrix(matrix) {
  *  [2, 9, 5, 9]    => [2, 5, 9, 9]
  *  [-2, 9, 5, -3]  => [-3, -2, 5, 9]
  */
-function sortByAsc(/* arr */) {
-  throw new Error('Not implemented');
+function sortHalfArr(leftArr, rightArr) {
+  const copyArr = [];
+  let k = 0;
+  let j = 0;
+
+  while (k < leftArr.length || j < rightArr.length) {
+    if (
+      leftArr[k] < rightArr[j] ||
+      leftArr[j] === undefined ||
+      rightArr[j] === undefined
+    ) {
+      copyArr[copyArr.length] = leftArr[k];
+      k += 1;
+    } else {
+      copyArr[copyArr.length] = rightArr[j];
+      j += 1;
+    }
+  }
+
+  return copyArr;
+}
+
+function sortByAsc(arr) {
+  if (arr.length < 2) return arr;
+
+  const localArr = arr;
+  const leftArr = [];
+  const rightArr = [];
+
+  const mediumArr = Math.ceil(localArr.length / 2);
+
+  for (let i = 0; i < arr.length; i += 1) {
+    if (i < mediumArr) {
+      leftArr[leftArr.length] = localArr[i];
+    } else {
+      rightArr[rightArr.length] = localArr[i];
+    }
+  }
+
+  const copyArr = sortHalfArr(sortByAsc(leftArr), sortByAsc(rightArr));
+
+  for (let i = 0; i < localArr.length; i += 1) {
+    localArr[i] = copyArr[i];
+  }
+
+  return localArr;
 }
 
 /**
