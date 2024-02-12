@@ -315,8 +315,25 @@ function isContainNumber(num, digit) {
  *  [2, 3, 9, 5] => 2       => 2 + 3 === 5 then balance element is 9 and its index = 2
  *  [1, 2, 3, 4, 5] => -1   => no balance element
  */
-function getBalanceIndex(/* arr */) {
-  throw new Error('Not implemented');
+function getBalanceIndex(arr) {
+  if (arr.length < 3) return -1;
+
+  for (let i = 1; i < arr.length; i += 1) {
+    let leftSum = 0;
+    let rightSum = 0;
+
+    for (let j = 0; j < i; j += 1) {
+      leftSum += arr[j];
+    }
+
+    for (let q = i + 1; q < arr.length; q += 1) {
+      rightSum += arr[q];
+    }
+
+    if (leftSum === rightSum) return i;
+  }
+
+  return -1;
 }
 
 /**
@@ -340,8 +357,50 @@ function getBalanceIndex(/* arr */) {
  *          [10, 9,  8,  7]
  *        ]
  */
-function getSpiralMatrix(/* size */) {
-  throw new Error('Not implemented');
+function getSpiralMatrix(size) {
+  const result = [];
+
+  for (let i = 0; i < size; i += 1) {
+    result[i] = [];
+  }
+
+  let index = 1;
+  let columnStart = 0;
+  let columnEnd = size - 1;
+  let rowStart = 0;
+  let rowEnd = size - 1;
+
+  while (rowStart <= rowEnd && columnStart <= columnEnd) {
+    for (let i = columnStart; i <= columnEnd; i += 1) {
+      result[rowStart][i] = index;
+      index += 1;
+    }
+
+    rowStart += 1;
+
+    for (let i = rowStart; i <= rowEnd; i += 1) {
+      result[i][columnEnd] = index;
+      index += 1;
+    }
+
+    columnEnd -= 1;
+
+    for (let i = columnEnd; i >= columnStart; i -= 1) {
+      result[rowEnd][i] = index;
+      index += 1;
+    }
+
+    rowEnd -= 1;
+
+    for (let i = rowEnd; i >= rowStart; i -= 1) {
+      result[i][columnStart] = index;
+      index += 1;
+    }
+
+    columnStart += 1;
+  }
+
+  return result;
 }
 
 /**
@@ -359,8 +418,28 @@ function getSpiralMatrix(/* size */) {
  *    [7, 8, 9]         [9, 6, 3]
  *  ]                 ]
  */
-function rotateMatrix(/* matrix */) {
-  throw new Error('Not implemented');
+function rotateMatrix(matrix) {
+  const localMatrix = matrix;
+  const copyMatrix = [];
+  const columnEnd = localMatrix[0].length - 1;
+  let count = columnEnd;
+
+  for (let i = 0; i < localMatrix.length; i += 1) {
+    for (let j = 0; j < localMatrix[0].length; j += 1) {
+      if (!copyMatrix[i]) copyMatrix[i] = [];
+      copyMatrix[i][j] = localMatrix[i][j];
+    }
+  }
+
+  for (let i = 0; i < copyMatrix.length; i += 1) {
+    for (let j = 0; j <= columnEnd; j += 1) {
+      localMatrix[j][count] = copyMatrix[i][j];
+    }
+
+    count -= 1;
+  }
+
+  return localMatrix;
 }
 
 /**
